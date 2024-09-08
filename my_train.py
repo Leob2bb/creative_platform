@@ -12,35 +12,44 @@ class_mapping = {'traffic_light': 0, 'traffic_sign': 1, 'traffic_information': 2
 
 # XML 파일을 파싱하여 바운딩 박스 및 클래스 정보를 추출하는 함수
 def parse_voc_xml(xml_file):
-    # if not os.path.exists(xml_file):
-    #     raise FileNotFoundError(f"File not found: {xml_file}")
+    # 파일 존재 확인
+    if not os.path.exists(xml_file):
+        raise FileNotFoundError(f"File not found: {xml_file}")
     
-    tree = ET.parse(xml_file)
-    root = tree.getroot()
+    # 파일 크기 확인
+    if os.path.getsize(xml_file) == 0:
+        raise ValueError(f"File is empty: {xml_file}")
     
-    # 이미지 정보
-    filename = root.find('filename').text
-    size = root.find('size')
-    width = int(size.find('width').text)
-    height = int(size.find('height').text)
-
-    # 객체 정보
-    objects = []
-    for obj in root.findall('object'):
-        class_name = obj.find('name').text
-        bbox = obj.find('bndbox')
+    try:
+        tree = ET.parse(xml_file)
+        root = tree.getroot()
         
-        xmin = float(bbox.find('xmin').text) / width
-        ymin = float(bbox.find('ymin').text) / height
-        xmax = float(bbox.find('xmax').text) / width
-        ymax = float(bbox.find('ymax').text) / height
-        
-        objects.append({
-            'bbox': [ymin, xmin, ymax, xmax],  # VOC에서 tfds 포맷으로 변환
-            'label': class_mapping[class_name]
-        })
+        # 이미지 정보
+        filename = root.find('filename').text
+        size = root.find('size')
+        width = int(size.find('width').text)
+        height = int(size.find('height').text)
 
-    return filename, width, height, objects
+        # 객체 정보
+        objects = []
+        for obj in root.findall('object'):
+            class_name = obj.find('name').text
+            bbox = obj.find('bndbox')
+            
+            xmin = float(bbox.find('xmin').text) / width
+            ymin = float(bbox.find('ymin').text) / height
+            xmax = float(bbox.find('xmax').text) / width
+            ymax = float(bbox.find('ymax').text) / height
+            
+            objects.append({
+                'bbox': [ymin, xmin, ymax, xmax],  # VOC에서 tfds 포맷으로 변환
+                'label': class_mapping[class_name]
+            })
+
+        return filename, width, height, objects
+    except ET.ParseError as e:
+        print(f"Error parsing XML file {xml_file}: {e}")
+        return None, None, None, []
 
 # 모든 XML 파일을 파싱하여 TensorFlow Dataset 형식으로 변환
 def load_voc_dataset(voc_xml_folder):

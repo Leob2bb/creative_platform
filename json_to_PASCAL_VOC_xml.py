@@ -5,7 +5,7 @@ import os
 # Reference: ChatGPT
 
 # XML 생성 함수
-def create_voc_xml(json_data, json_name):
+def create_voc_xml(json_data, xml_folder_path):
     annotation = ET.Element("annotation")
     
     # 이미지 정보
@@ -48,11 +48,13 @@ def create_voc_xml(json_data, json_name):
     # xml 파일 이름을 jpg, json 파일 이름과 동일하게 작성.
     xml_name = filename.text.replace(".jpg", ".xml")
     print(xml_name)
-    tree.write("D:/XML_sample1/" + xml_name)
+    tree.write(xml_folder_path + xml_name) # 이거 뭐임?
 
 # JSON 파일 읽기
 
 folder_path = "D:/JSON_sample1"
+xml_folder_path = "D:/XML_sample1/"
+
 
 files = os.listdir(folder_path)
 
@@ -64,4 +66,4 @@ for file_name in files:
         with open(file_path, 'r', encoding='utf-8') as json_file:
             json_data = json.loads(json_file.read())
             # XML 생성
-            create_voc_xml(json_data, file_name)
+            create_voc_xml(json_data, xml_folder_path)

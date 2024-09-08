@@ -32,33 +32,33 @@ def load_and_preprocess_image(path):
 path_ds = tf.data.Dataset.from_tensor_slices(image_paths)
 image_ds = path_ds.map(load_and_preprocess_image, num_parallel_calls=tf.data.AUTOTUNE)
 
-label_ds = tf.data.Dataset.from_tensor_slices(labels)
+# label_ds = tf.data.Dataset.from_tensor_slices(labels)
 
 # 이미지와 라벨 결합
 image_label_ds = tf.data.Dataset.zip((image_ds, labels))
 
-DATASET_SIZE = len(image_paths)
-TRAIN_SIZE = int(0.8 * DATASET_SIZE)
-SHUFFLE_BUFFER_SIZE = 1000
+# DATASET_SIZE = len(image_paths)
+# TRAIN_SIZE = int(0.8 * DATASET_SIZE)
+# SHUFFLE_BUFFER_SIZE = 1000
 
-# 데이터셋 셔플
-shuffled_ds = image_label_ds.shuffle(SHUFFLE_BUFFER_SIZE)
+# # 데이터셋 셔플
+# shuffled_ds = image_label_ds.shuffle(SHUFFLE_BUFFER_SIZE)
 
-# 훈련 데이터셋
-train_ds = shuffled_ds.take(TRAIN_SIZE)
+# # 훈련 데이터셋
+# train_ds = shuffled_ds.take(TRAIN_SIZE)
 
-# 테스트 데이터셋
-test_ds = shuffled_ds.skip(TRAIN_SIZE)
+# # 테스트 데이터셋
+# test_ds = shuffled_ds.skip(TRAIN_SIZE)
 
-# NumPy 배열로 변환
-train_images = np.array([image.numpy() for image, _ in train_ds])
-train_labels = np.array([label.numpy() for _, label in train_ds])
-test_images = np.array([image.numpy() for image, _ in test_ds])
-test_labels = np.array([label.numpy() for _, label in test_ds])
+# # NumPy 배열로 변환
+# train_images = np.array([image.numpy() for image, _ in train_ds])
+# train_labels = np.array([label.numpy() for _, label in train_ds])
+# test_images = np.array([image.numpy() for image, _ in test_ds])
+# test_labels = np.array([label.numpy() for _, label in test_ds])
 
-# npz 파일로 저장
-np.savez_compressed('datasets.npz', 
-                    train_images=train_images, train_labels=train_labels,
-                    test_images=test_images, test_labels=test_labels)
+# # npz 파일로 저장
+# np.savez_compressed('datasets.npz', 
+#                     train_images=train_images, train_labels=train_labels,
+#                     test_images=test_images, test_labels=test_labels)
 
 

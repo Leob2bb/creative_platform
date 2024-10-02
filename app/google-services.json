@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "787231216020",
+    "firebase_url": "https://rcprojectjjr-default-rtdb.firebaseio.com",
+    "project_id": "rcprojectjjr",
+    "storage_bucket": "rcprojectjjr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:787231216020:android:c83cc5bbf5205e58fdbf81",
+        "android_client_info": {
+          "package_name": "com.example.myfourthapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-BjTYMrVFNitLypLMQx_1TpHcnuaE2I0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
